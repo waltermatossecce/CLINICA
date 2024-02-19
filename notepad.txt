@@ -1,0 +1,87 @@
+create table Analysis(
+AnalysisId int identity(1,1) primary key not null,
+Name varchar(50),
+State int not null
+AudiCreateDate datetime2(7) not null
+);
+
+/*LISTA ANALYSIS*/
+CREATE PROCEDURE uspAnalysisList
+AS
+BEGIN
+   select 
+   AnalysisId,
+   AudiCreateDate,
+   State,
+   Name
+   from Analysis
+END
+
+exec uspAnalysisList;
+
+CREATE OR ALTER PROCEDURE uspAnalysisById
+(
+ @AnalysisId int
+)
+AS
+BEGIN
+    SELECT 
+	 AnalysisId,
+	 Name
+	FROM Analysis
+	Where AnalysisId = @AnalysisId
+END
+
+Select * from Analysis;
+
+exec uspAnalysisById 3
+
+
+
+//procedimiento para guardar analysis
+CREATE PROCEDURE uspAnalysisRegister
+(
+  @Name varchar(100),
+  @State int,
+  @AudiCreateDate datetime
+)
+AS
+BEGIN
+
+   insert into Analysis
+   (
+   name,
+   State,
+   AudiCreateDate
+   )
+   values
+   (
+    @Name,
+	@State,
+	@AudiCreateDate
+   );
+END
+
+//Para actualizar analysis
+CREATE PROCEDURE uspAnalysisEdit
+(
+ @AnalysisId int,
+ @Name varchar(50)
+)
+AS
+BEGIN
+  UPDATE Analysis
+  set Name = @Name
+  where AnalysisId = @AnalysisId
+END
+
+//Para eliminar un AnalysisId 
+CREATE PROCEDURE uspAnalysisRemove
+(
+ @AnalysisId int
+)
+AS
+BEGIN
+  Delete from Analysis
+  where AnalysisId = @AnalysisId
+END
