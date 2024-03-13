@@ -29,8 +29,7 @@ namespace CLINICA.Api.Controllers
         [HttpGet("{analysisId:int}")]
         public async Task<IActionResult> AnalysisById(int analysisId)
         {
-            var response = await _mediator.Send(new GetAnalysisByIdQuery()
-            { AnalysisId = analysisId });
+            var response = await _mediator.Send(new GetAnalysisByIdQuery(){ AnalysisId = analysisId });
 
             return Ok(response);
         }

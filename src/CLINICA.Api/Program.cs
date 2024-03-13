@@ -1,3 +1,4 @@
+using CLINICA.Api.Extensions.Middleware;
 using CLINICA.Application.UseCase.Extensions;
 using CLINICA.Persistencia.Extensions;
 
@@ -27,6 +28,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.AddMiddleware();
 
 app.MapControllers();
 

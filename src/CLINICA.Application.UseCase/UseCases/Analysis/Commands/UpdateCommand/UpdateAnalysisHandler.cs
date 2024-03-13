@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CLINICA.Application.Interfaces;
+using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
 using MediatR;
 using Entity = CLINICA.Domain.Entities;
@@ -9,12 +9,13 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.UpdateCommand
 {
     public class UpdateAnalysisHandler : IRequestHandler<UpdateAnalysisCommand, BaseResponse<bool>>
     {
-        private readonly IAnalysisRepository _analysisRepository;
+        //private readonly IAnalysisRepository _analysisRepository;
+        private readonly IUnitOfWork _unitOfWork; 
         private readonly IMapper _mapper;
 
-        public UpdateAnalysisHandler(IAnalysisRepository analysisRepository, IMapper mapper)
+        public UpdateAnalysisHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _analysisRepository = analysisRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -25,7 +26,8 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.UpdateCommand
             try
             {
                 var analysis = _mapper.Map<Entity.Analysis>(request);
-                response.data = await _analysisRepository.AnalysisEdit(analysis);
+                var parameters = new { analysis.AnalysisId, analysis.Name };
+                response.data = await _unitOfWork.Analysis.ExecAsync("uspAnalysisEdit", parameters);
 
                 if (response.data)
                 {

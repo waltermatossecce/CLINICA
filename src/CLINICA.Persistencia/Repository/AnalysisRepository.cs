@@ -1,4 +1,4 @@
-﻿using CLINICA.Application.Interfaces;
+﻿using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Domain.Entities;
 using CLINICA.Persistencia.Context;
 using Dapper;

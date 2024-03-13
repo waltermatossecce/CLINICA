@@ -1,24 +1,20 @@
 ﻿using AutoMapper;
 using CLINICA.Application.Dtos.Analysis.Response;
-using CLINICA.Application.Interfaces;
+using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery
 {
     public class AnalysisByIdHandler : IRequestHandler<GetAnalysisByIdQuery, BaseResponse<GetAnalysisByIdResponseDto>>
     {
-        private readonly IAnalysisRepository _analysisRepository;
+      //  private readonly IAnalysisRepository _analysisRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AnalysisByIdHandler(IAnalysisRepository analysisRepository = null, IMapper mapper = null)
+        public AnalysisByIdHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _analysisRepository = analysisRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -29,7 +25,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery
             try
             {
 
-                var analysis = await _analysisRepository.AnalysisById(request.AnalysisId); 
+                var analysis = await _unitOfWork.Analysis.GetByIdAsync("uspAnalysisById", new { request.AnalysisId}); 
                 
                 if(analysis is null)
                 {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CLINICA.Application.Interfaces;
+using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
 using MediatR;
 using Entity = CLINICA.Domain.Entities;
@@ -9,11 +9,14 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands
     public class DeleteAnalysisHandler : IRequestHandler<DeleteAnalysisCommand, BaseResponse<bool>>
     {
 
-        private readonly IAnalysisRepository _analysisRepository;
+        //private readonly IAnalysisRepository _analysisRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private IMapper _mapper;
 
-        public DeleteAnalysisHandler(IAnalysisRepository analysisRepository)
+        public DeleteAnalysisHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _analysisRepository = analysisRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<BaseResponse<bool>> Handle(DeleteAnalysisCommand request, CancellationToken cancellationToken)
@@ -22,7 +25,8 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands
 
             try
             {
-                response.data = await _analysisRepository.AnalysisDelete(request.AnalysisId);
+                var parameter = new { request.AnalysisId };
+                response.data = await _unitOfWork.Analysis.ExecAsync("uspAnalysisRemove", parameter);
 
                 if (response.data)
                 {

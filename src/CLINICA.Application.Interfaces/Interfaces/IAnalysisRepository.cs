@@ -1,6 +1,6 @@
 ﻿using CLINICA.Domain.Entities;
 
-namespace CLINICA.Application.Interfaces
+namespace CLINICA.Application.Interfaces.Interfaces
 {
     public interface IAnalysisRepository
     {
