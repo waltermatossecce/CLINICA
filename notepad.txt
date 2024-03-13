@@ -38,12 +38,11 @@ exec uspAnalysisById 3
 
 
 
-//procedimiento para guardar analysis
-CREATE PROCEDURE uspAnalysisRegister
+
+//moficamos el procedimiento uspAnalysisRegister
+ALTER PROCEDURE [dbo].[uspAnalysisRegister]
 (
-  @Name varchar(100),
-  @State int,
-  @AudiCreateDate datetime
+  @Name varchar(100)
 )
 AS
 BEGIN
@@ -57,8 +56,8 @@ BEGIN
    values
    (
     @Name,
-	@State,
-	@AudiCreateDate
+	1,
+	GETDATE()
    );
 END
 
