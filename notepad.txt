@@ -84,3 +84,18 @@ BEGIN
   Delete from Analysis
   where AnalysisId = @AnalysisId
 END
+
+
+//Actualizamos el estado del analysis
+
+create or Alter procedure uspAnalysisChangeState
+(
+  @AnalysisId int,
+  @State int
+)
+AS
+BEGIN
+   UPDATE Analysis
+   set State= @State
+   Where AnalysisId = @AnalysisId
+END

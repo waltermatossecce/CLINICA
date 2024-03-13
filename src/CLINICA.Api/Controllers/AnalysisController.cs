@@ -1,9 +1,9 @@
-﻿using CLINICA.Application.UseCase.UseCases.Analysis.Commands.CreateCommands;
+﻿using CLINICA.Application.UseCase.UseCases.Analysis.Commands.ChangeStateCommand;
+using CLINICA.Application.UseCase.UseCases.Analysis.Commands.CreateCommands;
 using CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands;
 using CLINICA.Application.UseCase.UseCases.Analysis.Commands.UpdateCommand;
 using CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery;
 using CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery;
-using CLINICA.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +50,12 @@ namespace CLINICA.Api.Controllers
         public async Task<IActionResult>RemoveAnalysis(int analysisId)
         {
             var response = await _mediator.Send(new DeleteAnalysisCommand() { AnalysisId = analysisId });
+            return Ok(response);
+        }
+        [HttpPut("changeState")]
+        public async Task<IActionResult> EditChangeState([FromBody] ChangeStateAnalysisCommand command)
+        {
+            var response =await _mediator.Send(command);
             return Ok(response);
         }
     }

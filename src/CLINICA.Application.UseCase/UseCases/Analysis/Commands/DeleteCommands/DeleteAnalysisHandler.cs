@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
+using CLINICA.Utilities.Constantes;
 using MediatR;
-using Entity = CLINICA.Domain.Entities;
 
 namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands
 {
@@ -25,8 +25,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands
 
             try
             {
-                var parameter = new { request.AnalysisId };
-                response.data = await _unitOfWork.Analysis.ExecAsync("uspAnalysisRemove", parameter);
+                response.data = await _unitOfWork.Analysis.ExecAsync(SP.uspAnalysisRemove, request);
 
                 if (response.data)
                 {

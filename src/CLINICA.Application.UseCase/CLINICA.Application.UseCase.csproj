@@ -18,6 +18,7 @@
     <ProjectReference Include="..\CLINICA.Application.Dtos\CLINICA.Application.Dtos.csproj" />
     <ProjectReference Include="..\CLINICA.Application.Interfaces\CLINICA.Application.Interfaces.csproj" />
     <ProjectReference Include="..\CLINICA.Domain\CLINICA.Domain.csproj" />
+    <ProjectReference Include="..\CLINICA.Utilities\CLINICA.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

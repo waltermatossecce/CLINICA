@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CLINICA.Application.Dtos.Analysis.Response;
+using CLINICA.Application.UseCase.UseCases.Analysis.Commands.ChangeStateCommand;
 using CLINICA.Application.UseCase.UseCases.Analysis.Commands.CreateCommands;
 using CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands;
 using CLINICA.Application.UseCase.UseCases.Analysis.Commands.UpdateCommand;
@@ -26,6 +27,8 @@ namespace CLINICA.Application.UseCase.Mappings
             CreateMap<CreateAnalysisCommand, Analysis>();
 
             CreateMap<UpdateAnalysisCommand, Analysis>();
+
+            CreateMap<ChangeStateAnalysisCommand, Analysis>();
         }
     }
 }

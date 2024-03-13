@@ -2,6 +2,7 @@
 using CLINICA.Application.Dtos.Analysis.Response;
 using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
+using CLINICA.Utilities.Constantes;
 using MediatR;
 
 namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery
@@ -25,7 +26,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery
             try
             {
 
-                var analysis = await _unitOfWork.Analysis.GetByIdAsync("uspAnalysisById", new { request.AnalysisId}); 
+                var analysis = await _unitOfWork.Analysis.GetByIdAsync(SP.uspAnalysisById, request); 
                 
                 if(analysis is null)
                 {

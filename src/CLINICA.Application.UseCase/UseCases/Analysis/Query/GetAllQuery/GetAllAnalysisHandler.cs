@@ -2,6 +2,7 @@
 using CLINICA.Application.Dtos.Analysis.Response;
 using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
+using CLINICA.Utilities.Constantes;
 using MediatR;
 
 namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery
@@ -25,7 +26,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery
             try
             {
 
-                var analysis = await _unitOfWork.Analysis.GetAllAsync("uspAnalysisList");
+                var analysis = await _unitOfWork.Analysis.GetAllAsync(SP.uspAnalysisList);
 
                 if(analysis is not null)
                 {
