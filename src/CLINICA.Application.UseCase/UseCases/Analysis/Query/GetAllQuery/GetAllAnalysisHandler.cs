@@ -32,7 +32,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery
                 {
                     response.IsSucess = true;
                     response.data = _mapper.Map<IEnumerable<GetAllAnalysisResponseDto>>(analysis);
-                    response.Message = "Consulta Exitosa!";
+                    response.Message = GlobalMessage.MESSAGE_QUERY;
                 }
 
             }catch (Exception ex)

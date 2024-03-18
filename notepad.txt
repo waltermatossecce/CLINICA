@@ -1,8 +1,9 @@
+
 create table Analysis(
-AnalysisId int identity(1,1) primary key not null,
+AnalysisId int identity(1,1)primary key not null,
 Name varchar(50),
 State int not null
-AudiCreateDate datetime2(7) not null
+AudiCreateDate datetime2(7)not null
 );
 
 /*LISTA ANALYSIS*/
@@ -34,15 +35,14 @@ END
 
 Select * from Analysis;
 
-exec uspAnalysisById 3
 
 
-
-
-//moficamos el procedimiento uspAnalysisRegister
-ALTER PROCEDURE [dbo].[uspAnalysisRegister]
+//procedimiento para guardar analysis
+CREATE PROCEDURE uspAnalysisRegister
 (
-  @Name varchar(100)
+  @Name varchar(100),
+  @State int,
+  @AudiCreateDate datetime
 )
 AS
 BEGIN
@@ -56,8 +56,8 @@ BEGIN
    values
    (
     @Name,
-	1,
-	GETDATE()
+	@State,
+	@AudiCreateDate
    );
 END
 
@@ -86,16 +86,105 @@ BEGIN
 END
 
 
-//Actualizamos el estado del analysis
-
-create or Alter procedure uspAnalysisChangeState
+//creamos la table examen y el procedimiento almacenado
+create table Exams
 (
-  @AnalysisId int,
+  ExamId int identity(1,1)primary key not null,
+  Name varchar(100),
+  AnalysisId INT NOT NULL,
+  State int not null,
+  AuditCreateDate datetime2(7)not null,
+  Foreign key (AnalysisId) references Analysis(AnalysisId)
+);
+
+CREATE OR ALTER PROCEDURE uspExamList
+AS
+BEGIN
+   SELECT
+	   ex.ExamId,
+	   ex.Name,
+	   a.Name Analysis,
+	   ex.AuditCreateDate,
+	   case ex.State WHEN 1 THEN 'ACTIVO'
+	   ELSE 'INACTIVO'
+	   END StateExam
+	   from Exams ex
+	   inner join Analysis a
+	   ON ex.AnalysisId=a.AnalysisId 
+END
+
+//busca por id de examen
+CREATE OR ALTER PROCEDURE uspExamenById 
+(
+ @ExamId int
+)
+AS
+BEGIN
+  SELECT 
+  ex.ExamId,
+  ex.Name,
+  ex.AnalysisId
+  FROM Exams ex
+  WHERE ex.ExamId =@ExamId
+END
+
+//guardar registro de examen
+create or alter procedure uspExamRegister
+(
+@Name varchar(100),
+@AnalysisId int 
+)
+AS
+BEGIN 
+   INSERT INTO Exams
+   (
+   Name,
+   AnalysisId,
+   State,
+   AuditCreateDate
+   )
+   VALUES
+   (
+     @Name,
+	 @AnalysisId,
+	 1,
+	 GETDATE()
+   )
+END
+create or alter procedure uspExamenUpdate
+(
+ @ExamId int,
+ @Name varchar(100),
+ @AnalysisId int
+)
+AS
+BEGIN
+   UPDATE Exams 
+   set Name = @Name,
+   AnalysisId = @AnalysisId
+   WHERE ExamId = @ExamId
+END
+
+create or alter procedure uspExamenDelete
+(
+ @ExamId int
+)
+AS
+BEGIN
+   DELETE from Exams
+   where ExamId= @ExamId 
+END
+
+select * from Exams;
+
+create or alter procedure uspExamenChangeState
+(
+  @ExamId int,
   @State int
 )
 AS
 BEGIN
-   UPDATE Analysis
-   set State= @State
-   Where AnalysisId = @AnalysisId
+    UPDATE Exams
+	set State = @State
+	WHERE ExamId = @ExamId
 END

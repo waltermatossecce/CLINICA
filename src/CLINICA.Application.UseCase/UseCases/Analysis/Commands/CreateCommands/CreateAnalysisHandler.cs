@@ -34,7 +34,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.CreateCommands
                 if (response.data)
                 {
                     response.IsSucess = true;
-                    response.Message = "Se registro correctamente.";
+                    response.Message = GlobalMessage.MESSAGE_SAVE;
                 }
             }
             catch (Exception ex) 

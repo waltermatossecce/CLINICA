@@ -31,12 +31,12 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery
                 if(analysis is null)
                 {
                     response.IsSucess = false;
-                    response.Message = "No se encontro registros";
+                    response.Message = GlobalMessage.MESSAGE_QUERY_EMPTY;
                     return response;
                 }
                 response.IsSucess = true;
                 response.data = _mapper.Map<GetAnalysisByIdResponseDto>(analysis);
-                response.Message = "Consulta Exitosa";
+                response.Message = GlobalMessage.MESSAGE_QUERY;
             }
             catch (Exception ex)
             {

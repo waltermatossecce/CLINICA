@@ -34,7 +34,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.UpdateCommand
                 if (response.data)
                 {
                     response.IsSucess = true;
-                    response.Message = "Se actualizo correctamente.";
+                    response.Message = GlobalMessage.MESSAGE_UPDATE;
                 }
             }
             catch (Exception ex) 

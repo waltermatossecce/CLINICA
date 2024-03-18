@@ -9,10 +9,11 @@ namespace CLINICA.Persistencia.Extensions
     {
         public static IServiceCollection addInyectionPersistence(this IServiceCollection services)
         {
-            services.AddSingleton<ApplicationDbContext>();
+            //  services.AddScoped<IExamenRepository, ExamRepository>();
+            // services.AddScoped<IAnalysisRepository, AnalysisRepository>();
+            services.AddSingleton<ApplicationDbContext>(); 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IAnalysisRepository, AnalysisRepository>();
             return services;
         }
     }

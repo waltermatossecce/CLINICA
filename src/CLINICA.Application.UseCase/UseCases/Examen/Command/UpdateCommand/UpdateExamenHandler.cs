@@ -6,33 +6,35 @@ using MediatR;
 using CLINICA.Utilities.HelperExtensions;
 using CLINICA.Utilities.Constantes;
 
-namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.ChangeStateCommand
+namespace CLINICA.Application.UseCase.UseCases.Examen.Command.UpdateCommand
 {
-    public class ChangeStateAnalysisHandler : IRequestHandler<ChangeStateAnalysisCommand, BaseResponse<bool>>
+    internal class UpdateExamenHandler : IRequestHandler<UpdateExamenCommand, BaseResponse<bool>>
     {
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public ChangeStateAnalysisHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateExamenHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<bool>> Handle(ChangeStateAnalysisCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(UpdateExamenCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<bool>();
 
             try
             {
-                var analysis = _mapper.Map<Entidad.Analysis>(request);
-                var parameters = analysis.GetPropertyWithValues();
-                response.data = await _unitOfWork.Analysis.ExecAsync(SP.uspAnalysisChangeState,parameters);
+                var examen = _mapper.Map<Entidad.Examen>(request);
+
+                var parameters = examen.GetPropertyWithValues();
+                
+                response.data = await _unitOfWork.Exams.ExecAsync(SP.uspExamenUpdate, parameters);
 
                 if (response.data)
                 {
                     response.IsSucess = true;
-                    response.Message = GlobalMessage.MESSAGE_UPDATE_STATE;
+                    response.Message = GlobalMessage.MESSAGE_UPDATE;
                 }
             }
             catch (Exception ex)

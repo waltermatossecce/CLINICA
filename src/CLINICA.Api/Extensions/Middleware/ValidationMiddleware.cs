@@ -1,5 +1,6 @@
 ﻿using CLINICA.Application.UseCase.Commons.Base;
 using CLINICA.Application.UseCase.Commons.Exceptions;
+using CLINICA.Utilities.Constantes;
 using System.Text.Json;
 
 namespace CLINICA.Api.Extensions.Middleware
@@ -23,7 +24,7 @@ namespace CLINICA.Api.Extensions.Middleware
                 context.Response.ContentType = "application/json";
                 await JsonSerializer.SerializeAsync(context.Response.Body, new BaseResponse<object>
                 {
-                    Message = "Errores de validacion",
+                    Message = GlobalMessage.MESSAGE_VALIDATE,
                     Errors = ex.Errors
                 }); ;
             }

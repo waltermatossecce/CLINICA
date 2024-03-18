@@ -2,32 +2,34 @@
 using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Application.UseCase.Commons.Base;
 using Entidad = CLINICA.Domain.Entities;
+using CLINICA.Utilities.Constantes;
 using MediatR;
 using CLINICA.Utilities.HelperExtensions;
-using CLINICA.Utilities.Constantes;
 
-namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.ChangeStateCommand
+namespace CLINICA.Application.UseCase.UseCases.Examen.Command.ChangeStateCommand
 {
-    public class ChangeStateAnalysisHandler : IRequestHandler<ChangeStateAnalysisCommand, BaseResponse<bool>>
+    public class ChangeStateExamenHandler : IRequestHandler<ChangeStateExamenCommand, BaseResponse<bool>>
     {
-
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public ChangeStateAnalysisHandler(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public ChangeStateExamenHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<bool>> Handle(ChangeStateAnalysisCommand request, CancellationToken cancellationToken)
+
+        public async Task<BaseResponse<bool>> Handle(ChangeStateExamenCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseResponse<bool>();
 
             try
             {
-                var analysis = _mapper.Map<Entidad.Analysis>(request);
-                var parameters = analysis.GetPropertyWithValues();
-                response.data = await _unitOfWork.Analysis.ExecAsync(SP.uspAnalysisChangeState,parameters);
+
+                var examen = _mapper.Map<Entidad.Examen>(request);
+                var parameter = examen.GetPropertyWithValues();
+                response.data = await _unitOfWork.Exams.ExecAsync(SP.uspExamenChangeState, request);
 
                 if (response.data)
                 {

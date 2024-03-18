@@ -11,5 +11,16 @@
         public const string uspAnalysisChangeState = "uspAnalysisChangeState";
         #endregion
 
+
+        #region uspExamen
+
+        public const string uspExamList = "uspExamList";
+        public const string uspExamenById = "uspExamenById";
+        public const string uspExamRegister = "uspExamRegister";
+        public const string uspExamenUpdate = "uspExamenUpdate";
+        public const string uspExamenDelete = "uspExamenDelete";
+        public const string uspExamenChangeState = "uspExamenChangeState";
+
+        #endregion
     }
 }

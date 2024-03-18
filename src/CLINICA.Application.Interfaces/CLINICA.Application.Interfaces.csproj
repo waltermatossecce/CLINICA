@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CLINICA.Application.Dtos\CLINICA.Application.Dtos.csproj" />
     <ProjectReference Include="..\CLINICA.Domain\CLINICA.Domain.csproj" />
   </ItemGroup>
 

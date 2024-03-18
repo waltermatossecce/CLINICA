@@ -30,7 +30,7 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Commands.DeleteCommands
                 if (response.data)
                 {
                     response.IsSucess = true;
-                    response.Message = "Se elimino correctamente";
+                    response.Message = GlobalMessage.MESSAGE_DELETE;
                 }
 
             }catch (Exception ex)
