@@ -20,6 +20,16 @@
         public const string uspExamenUpdate = "uspExamenUpdate";
         public const string uspExamenDelete = "uspExamenDelete";
         public const string uspExamenChangeState = "uspExamenChangeState";
+        #endregion
+
+        #region uspPatients
+
+        public const string uspPatientList = "uspPatientList";
+        public const string uspPatientById = "uspPatientById";
+        public const string uspPatientRegister = "uspPatientRegister";
+        public const string uspPatientUpdate = "uspPatientUpdate";
+        public const string uspPatientRemove = "uspPatientRemove";
+        public const string uspChangeStatePatient = "uspChangeStatePatient";
 
         #endregion
     }

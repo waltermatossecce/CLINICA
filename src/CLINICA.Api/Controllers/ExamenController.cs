@@ -1,5 +1,4 @@
-﻿using CLINICA.Application.Dtos.Examen.Response;
-using CLINICA.Application.UseCase.UseCases.Examen.Command.ChangeStateCommand;
+﻿using CLINICA.Application.UseCase.UseCases.Examen.Command.ChangeStateCommand;
 using CLINICA.Application.UseCase.UseCases.Examen.Command.CreateCommand;
 using CLINICA.Application.UseCase.UseCases.Examen.Command.DeleteCommand;
 using CLINICA.Application.UseCase.UseCases.Examen.Command.UpdateCommand;

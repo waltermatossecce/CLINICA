@@ -188,3 +188,203 @@ BEGIN
 	set State = @State
 	WHERE ExamId = @ExamId
 END
+
+
+create table DocumentType
+(
+  DocumentTypeId int identity(1,1)primary key not null,
+  Document varchar(50),
+  State int
+)
+go
+
+
+create table TypeAges
+(
+ TypeAgeId int identity(1,1)primary key not null,
+ TypeAge varchar(15),
+ State int
+)
+go
+
+create table Genders
+(
+   GenderId int identity(1,1)primary key not null,
+   Gender varchar(25),
+   State int 
+)
+go
+
+Create table Patient
+(
+  PatientId int identity(1,1)primary key not null,
+  Names varchar(100),
+  LastName varchar(50),
+  MotherMaidenName varchar(50),
+  DocumentTypeId int,
+  DocumentNumber varchar(25),
+  Phono varchar(25),
+  TypeAgeId int,
+  Age Int,
+  GenerId int,
+  State int,
+  AuditCreateDate datetime2(7),
+  FOREIGN KEY(DocumentTypeId) references DocumentType(DocumentTypeId),
+  FOREIGN KEY(TypeAgeId) references TypeAges(TypeAgeId),
+  FOREIGN KEY(GenerId) references Genders(GenderId),
+)
+
+create or alter procedure uspPatientList
+AS
+BEGIN
+   select
+   pa.PatientId,
+   pa.Names,
+   CONCAT_WS('', pa.LastName, pa.MotherMaidenName) SurNames,
+   dt.Document documentType,
+   pa.DocumentNumber,
+   pa.Phono,
+   CONCAT_WS(' ' , pa.Age, ta.TypeAge) Age,
+   ge.Gender,
+   Case pa.State
+     WHEN 1 then 'Activo'
+	 else 'Inactivo'
+	 End StatePatient,
+	 pa.AuditCreateDate
+   from Patient pa
+   INNER JOIN DocumentType dt
+   ON pa.DocumentTypeId = dt.DocumentTypeId
+   INNER JOIN TypeAges ta
+   ON pa.TypeAgeId = ta.TypeAgeId
+   INNER JOIN Genders ge
+   ON pa.GenerId = ge.GenderId
+END
+
+//busca pacientes por id
+create or alter procedure uspPatientById 
+(
+ @PatientId int
+)
+AS
+BEGIN 
+    SELECT 
+	pa.PatientId,
+	pa.Names,
+	pa.LastName,
+	pa.MotherMaidenName,
+	pa.DocumentTypeId,
+	pa.DocumentNumber,
+	pa.Phono,
+	pa.TypeAgeId,
+	pa.Age,
+	pa.GenerId
+	FROM Patient pa
+    WHERE PatientId = @PatientId
+END
+
+//Procedimiento almacenado para guardar paciente
+
+CREATE OR ALTER PROCEDURE uspPatientRegister
+(
+  @Names varchar(100),
+  @LastName varchar(50),
+  @MotherMaidenName varchar(50),
+  @DocumentTypeId int,
+  @DocumentNumber varchar(25),
+  @Phono int,
+  @TypeAgeId int,
+  @Age int ,
+  @GenerId int
+)
+AS
+BEGIN
+  INSERT INTO Patient
+  (
+  Names,
+  LastName,
+  MotherMaidenName,
+  DocumentTypeId,
+  DocumentNumber,
+  Phono,
+  TypeAgeId,
+  Age,
+  GenerId,
+  State,
+  AuditCreateDate
+  )
+  values
+  (
+  @Names,
+  @LastName,
+  @MotherMaidenName,
+  @DocumentTypeId,
+  @DocumentNumber,
+  @Phono,
+  @TypeAgeId,
+  @Age,
+  @GenerId,
+  1,
+  GetDate()
+  ) 
+END
+
+//actualizamos los pacientes
+CREATE OR ALTER PROCEDURE uspPatientUpdate
+(
+  @PatientId Int,
+  @Names varchar(100),
+  @LastName varchar(50),
+  @MotherMaidenName varchar(50),
+  @DocumentTypeId int,
+  @DocumentNumber varchar(25),
+  @Phono int,
+  @TypeAgeId int,
+  @Age int,
+  @GenerId int
+)
+AS
+BEGIN 
+
+  UPDATE Patient
+  set Names = @Names,
+  LastName = @LastName,
+  MotherMaidenName = @MotherMaidenName,
+  DocumentTypeId = @DocumentTypeId,
+  DocumentNumber = @DocumentNumber,
+  Phono = @Phono,
+  TypeAgeId = @TypeAgeId,
+  Age = @Age,
+  GenerId = @GenerId
+  WHERE PatientId = @PatientId
+END
+
+
+CREATE OR ALTER PROCEDURE uspPatientRemove
+(
+@PatientId int
+)
+AS
+BEGIN
+   
+   DELETE from Patient
+   WHERE PatientId = @PatientId
+END
+
+select * from Patient;
+
+
+CREATE PROCEDURE uspChangeStatePatient
+(
+  @PatientId int,
+  @State int
+)
+AS
+BEGIN
+
+   Update Patient
+   set State = @State
+   WHERE PatientId = @PatientId
+END
+
+
+

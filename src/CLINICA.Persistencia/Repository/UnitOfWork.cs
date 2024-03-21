@@ -12,12 +12,16 @@ namespace CLINICA.Persistencia.Repository
 
         public IExamenRepository Exams {  get; }
 
+        public IPatientRepository Patients {  get; }
+
         public UnitOfWork(ApplicationDbContext context, IGenericRepository<Analysis> analysis)
         {
             _context = context;
             Analysis = analysis;
             Exams = new ExamRepository(_context);
-            
+            Patients = new PatientRepository(_context);
+
+
         }
 
         public void Dispose()

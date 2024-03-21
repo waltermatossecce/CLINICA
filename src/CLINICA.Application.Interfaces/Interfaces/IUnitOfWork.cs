@@ -6,6 +6,7 @@ namespace CLINICA.Application.Interfaces.Interfaces
     {
         IGenericRepository<Analysis>Analysis { get;}
         IExamenRepository Exams { get;}
+        IPatientRepository Patients { get;}
 
     }
 }

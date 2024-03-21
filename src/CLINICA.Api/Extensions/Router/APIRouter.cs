@@ -25,5 +25,14 @@
             public const string DeleteExamen = API + "Examen/examId:int";
             public const string ChangeStateExamen = API + "ChangeStateExamen";
         }
+        public struct PACIENTES
+        {
+            public const string ListaPacientes = API + "ListaPacientes";
+            public const string PacientesById = API + "Pacientes/{patientId:int}";
+            public const string PacientRegister = API + "PacientRegister";
+            public const string PacientesUpdate = API + "UpdatePacientes";
+            public const string PacientesRemove = API + "PacientesRemove/{patientId:int}";
+            public const string ChangeStatePatient = API + "ChangeStatePatient";
+        }
     }
 }
