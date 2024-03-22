@@ -8,5 +8,7 @@ namespace CLINICA.Application.Interfaces.Interfaces
         IExamenRepository Exams { get;}
         IPatientRepository Patients { get;}
 
+        IMedicRepository Medic { get;}
+
     }
 }

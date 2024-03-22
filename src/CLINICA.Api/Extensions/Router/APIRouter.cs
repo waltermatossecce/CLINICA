@@ -34,5 +34,14 @@
             public const string PacientesRemove = API + "PacientesRemove/{patientId:int}";
             public const string ChangeStatePatient = API + "ChangeStatePatient";
         }
+        public struct MEDICOS
+        {
+            public const string ListaMedicos = API + "ListaMedicos";
+            public const string MedicosById = API + "Medicos/{medicId:int}";
+            public const string MedicRegister = API + "MedicRegister";
+            public const string MedicUpdate = API + "UpdateMedic";
+            public const string MedicDelete = API + "Delete/medicId:int";
+            public const string ChangeStateMedic = API + "ChangeStateMedic";
+        }
     }
 }

@@ -4,7 +4,6 @@ using CLINICA.Application.UseCase.UseCases.Pacientes.Command.DeleteCommand;
 using CLINICA.Application.UseCase.UseCases.Pacientes.Command.UpdateCommand;
 using CLINICA.Application.UseCase.UseCases.Pacientes.Query.GetAllQuery;
 using CLINICA.Application.UseCase.UseCases.Pacientes.Query.GetByIdQuery;
-using CLINICA.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static CLINICA.Api.Extensions.Router.APIRouter;

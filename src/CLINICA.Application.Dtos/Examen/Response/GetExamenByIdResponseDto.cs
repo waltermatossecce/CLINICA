@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CLINICA.Application.Dtos.Examen.Response
+﻿namespace CLINICA.Application.Dtos.Examen.Response
 {
     public class GetExamenByIdResponseDto
     {

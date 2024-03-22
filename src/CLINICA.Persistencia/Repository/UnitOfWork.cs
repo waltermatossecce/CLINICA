@@ -14,21 +14,19 @@ namespace CLINICA.Persistencia.Repository
 
         public IPatientRepository Patients {  get; }
 
+        public IMedicRepository Medic { get; }
+
         public UnitOfWork(ApplicationDbContext context, IGenericRepository<Analysis> analysis)
         {
             _context = context;
             Analysis = analysis;
             Exams = new ExamRepository(_context);
             Patients = new PatientRepository(_context);
-
-
+            Medic = new MedicRepository(_context);
         }
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
-
-
     }
 }

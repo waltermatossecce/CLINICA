@@ -1,5 +1,4 @@
 ﻿using CLINICA.Application.Interfaces.Interfaces;
-using CLINICA.Domain.Entities;
 using CLINICA.Persistencia.Context;
 using Dapper;
 using System.Data;
@@ -19,7 +18,6 @@ namespace CLINICA.Persistencia.Repository
         {
             using var connection = _context.CreateConnection;
             return await connection.QueryAsync<T>(storeProcedure, commandType: CommandType.StoredProcedure);
-
         }
 
         public async Task<T> GetByIdAsync(string storeProcedure, object parameters)

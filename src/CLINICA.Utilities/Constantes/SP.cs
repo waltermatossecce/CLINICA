@@ -23,14 +23,21 @@
         #endregion
 
         #region uspPatients
-
         public const string uspPatientList = "uspPatientList";
         public const string uspPatientById = "uspPatientById";
         public const string uspPatientRegister = "uspPatientRegister";
         public const string uspPatientUpdate = "uspPatientUpdate";
         public const string uspPatientRemove = "uspPatientRemove";
         public const string uspChangeStatePatient = "uspChangeStatePatient";
+        #endregion
 
+        #region uspMedic
+        public const string uspMedicList = "uspMedicList";
+        public const string uspMedicById = "uspMedicById";
+        public const string uspMedicRegister = "uspMedicRegister";
+        public const string uspMedicUpdate = "uspMedicUpdate";
+        public const string uspMedicRemove = "uspMedicRemove";
+        public const string uspChangeStateMedic = "uspChangeStateMedic";
         #endregion
     }
 }

@@ -388,3 +388,178 @@ END
 
 
 
+--Especialidad de un medico
+CREATE TABLE Specialities
+(
+  SpecialtyId INT IDENTITY(1,1)primary key not null,
+  Name varchar(100)not null,
+  State Int not null,
+  AuditCreateDate datetime2(7)not null 
+)
+
+--Creacion de tabla de medicos
+CREATE TABLE Medics
+(
+   MedicId Int Identity(1,1)primary key not null,
+   Names varchar(100)not null,
+   Lastname varchar(100) not null,
+   MotherMaidenName varchar(100)not null,
+   Address varchar(255)not null,
+   Phone varchar(15)null,
+   BithDate date null,
+   DocumentTypeId int not null,
+   DocumentNumber varchar(25)not null,
+   SpecialtyId int not null,
+   State int not null,
+   AuditCreateDate datetime2(7) not null,
+   Foreign key (DocumentTypeId) references DocumentType(DocumentTypeId),
+   Foreign key (SpecialtyId) references Specialities(SpecialtyId)
+)
+go
+
+
+--Creamos un procedimiento de una listado de medicos y specitialities de medico
+CREATE OR ALTER PROCEDURE uspMedicList
+AS
+BEGIN
+   select 
+   me.MedicId,
+   me.Names,
+   CONCAT_WS(' ', me.Lastname, me.MotherMaidenName) surNames,
+   sp.Name AS Specialities,
+   dt.Document AS DocumentType,
+   me.DocumentNumber,
+   me.Address,
+   me.Phone,
+   me.BithDate,
+   CASE me.State
+      WHEN 1 THEN 'ACTIVO'
+	  ELSE 'INACTIVO'
+	  End StateMedic,
+	  me.AuditCreateDate
+   from Medics me
+   INNER JOIN DocumentType dt
+   ON me.DocumentTypeId = dt.DocumentTypeId
+   INNER JOIN Specialities sp
+   ON me.SpecialtyId = sp.SpecialtyId
+END
+
+
+--Creamos un procedimiento almacenado de buscar de medicos por su Id
+create or alter procedure uspMedicById
+(
+ @MedicId int
+)
+AS
+BEGIN
+ select 
+ MedicId,
+ Names,
+ Lastname,
+ MotherMaidenName,
+ Address,
+ Phone,
+ BithDate,
+ DocumentTypeId,
+ DocumentNumber,
+ SpecialtyId
+ from Medics me
+ where MedicId = @MedicId
+END
+
+--Creamos un procedimiento almacenado de registrar medicos
+Create or alter procedure uspMedicRegister
+(
+  @Names varchar(100),
+  @Lastname varchar(100),
+  @MotherMaidenName varchar(100),
+  @Address varchar(255),
+  @Phone varchar(15),
+  @BithDate varchar(10),
+  @DocumentTypeId int,
+  @DocumentNumber varchar(25),
+  @SpecialtyId int
+)
+AS
+BEGIN
+  INSERT INTO Medics
+  (
+  Names,
+  Lastname,
+  MotherMaidenName,
+  Address,
+  Phone,
+  BithDate,
+  DocumentTypeId,
+  DocumentNumber,
+  SpecialtyId,
+  State,
+  AuditCreateDate
+  ) 
+  VALUES
+  (
+  @Names,
+  @Lastname,
+  @MotherMaidenName,
+  @Address,
+  @Phone,
+  CONVERT(DATE, @BithDate),
+  @DocumentTypeId,
+  @DocumentNumber,
+  @SpecialtyId,
+  1,
+  GETDATE()
+  )
+END
+
+--Actualizamos la tabla de medicos
+Create or alter procedure uspMedicUpdate
+(
+  @MedicId int,
+  @Names varchar(100),
+  @Lastname varchar(100),
+  @MotherMaidenName varchar(100),
+  @Address varchar(255),
+  @Phone varchar(15),
+  @BithDate varchar(10),
+  @DocumentTypeId int,
+  @DocumentNumber varchar(25),
+  @SpecialtyId int
+)
+AS
+BEGIN
+  update Medics
+  set Names = @Names,
+  Lastname = @Lastname,
+  MotherMaidenName = @MotherMaidenName,
+  Address =@Address,
+  Phone = @Phone,
+  BithDate = CONVERT (DATE, @BithDate),
+  DocumentTypeId = @DocumentTypeId,
+  DocumentNumber = @DocumentNumber,
+  SpecialtyId = @SpecialtyId
+  WHERE MedicId = @MedicId
+END
+
+--creamos un procedimiento para eliminar un medico
+create procedure uspMedicRemove
+(
+ @MedicId int
+)
+AS
+BEGIN
+Delete from Medics
+where MedicId = @MedicId
+END
+--Creamos un procedimiento almacenado de actualizar el estado de un medico
+create or alter procedure uspChangeStateMedic
+(
+ @MedicId int,
+ @State int
+)
+AS
+BEGIN
+  update Medics
+  set State =@State
+  Where MedicId = @MedicId
+END
