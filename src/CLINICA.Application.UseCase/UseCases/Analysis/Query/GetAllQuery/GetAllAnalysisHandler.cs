@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery
 {
-    public class GetAllAnalysisHandler : IRequestHandler<GetAllAnalysisQuery, BaseResponse<IEnumerable<GetAllAnalysisResponseDto>>>
+    public class GetAllAnalysisHandler : IRequestHandler<GetAllAnalysisQuery, BasePaginationResponse<IEnumerable<GetAllAnalysisResponseDto>>>
     {
         //private readonly IAnalysisRepository _analysisRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -19,18 +19,21 @@ namespace CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<IEnumerable<GetAllAnalysisResponseDto>>> Handle(GetAllAnalysisQuery request, CancellationToken cancellationToken)
+        public async Task<BasePaginationResponse<IEnumerable<GetAllAnalysisResponseDto>>> Handle(GetAllAnalysisQuery request, CancellationToken cancellationToken)
         {
-            var response = new BaseResponse<IEnumerable<GetAllAnalysisResponseDto>>();
+            var response = new BasePaginationResponse<IEnumerable<GetAllAnalysisResponseDto>>();
 
             try
             {
-
-                var analysis = await _unitOfWork.Analysis.GetAllAsync(SP.uspAnalysisList);
+                var count = await _unitOfWork.Analysis.CountAsync(TB.Analysis);
+                var analysis = await _unitOfWork.Analysis.GetAllWithPaginationAsync(SP.uspAnalysisList, request);
 
                 if(analysis is not null)
                 {
                     response.IsSucess = true;
+                    response.PageNumber = request.PageNumber;
+                    response.TotalPages = (int)Math.Ceiling(count / (double)request.PageSize);
+                    response.TotalCount = count;
                     response.data = _mapper.Map<IEnumerable<GetAllAnalysisResponseDto>>(analysis);
                     response.Message = GlobalMessage.MESSAGE_QUERY;
                 }

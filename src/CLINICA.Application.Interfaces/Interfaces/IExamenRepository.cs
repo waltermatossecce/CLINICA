@@ -5,7 +5,7 @@ namespace CLINICA.Application.Interfaces.Interfaces
 {
     public interface IExamenRepository : IGenericRepository<Examen>
     {
-        Task<IEnumerable<GetAllExamenResponseDto>> GetAllExams(string storedProcedure);
+        Task<IEnumerable<GetAllExamenResponseDto>> GetAllExams(string storedProcedure ,object parameters);
 
     }
 }

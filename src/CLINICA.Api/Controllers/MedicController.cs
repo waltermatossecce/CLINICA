@@ -24,9 +24,9 @@ namespace CLINICA.Api.Controllers
         }
 
         [HttpGet(MEDICOS.ListaMedicos)]
-        public async Task<IActionResult> listaMedic()
+        public async Task<IActionResult> listaMedic([FromQuery] GetAllMedicQuery query)
         {
-            var response = await _mediator.Send(new GetAllMedicQuery());
+            var response = await _mediator.Send(query);
             return Ok(response);
         }
         [HttpGet(MEDICOS.MedicosById)]

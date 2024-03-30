@@ -40,4 +40,10 @@
         public const string uspChangeStateMedic = "uspChangeStateMedic";
         #endregion
     }
+    public class TB
+    {
+        public const string Analysis = "Analysis";
+        public const string Exams = "Exams";
+        public const string Medics = "Medics";
+    }
 }

@@ -37,5 +37,25 @@ namespace CLINICA.Persistencia.Repository
             return recordAffected > 0;
 
         }
+
+        public async Task<IEnumerable<T>> GetAllWithPaginationAsync(string storedprocedure, object parameter)
+        {
+            using var connection = _context.CreateConnection;
+
+            var objParam = new DynamicParameters(parameter);
+
+            return await connection.QueryAsync<T>(storedprocedure,param: objParam, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<int> CountAsync(string tableName)
+        {
+            using var connection = _context.CreateConnection;
+
+            var query = $"SELECT COUNT(1) FROM {tableName}";
+
+            var count = await connection.ExecuteScalarAsync<int>(query,commandType: CommandType.Text);
+ 
+            return count;
+        }
     }
 }

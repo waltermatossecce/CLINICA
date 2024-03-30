@@ -3,12 +3,7 @@ using CLINICA.Application.Interfaces.Interfaces;
 using CLINICA.Domain.Entities;
 using CLINICA.Persistencia.Context;
 using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLINICA.Persistencia.Repository
 {
@@ -22,12 +17,13 @@ namespace CLINICA.Persistencia.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<GetAllMedicResponseDto>> GetMedicAllAsync(string storedProcedure)
+        public async Task<IEnumerable<GetAllMedicResponseDto>> GetMedicAllAsync(string storedProcedure, object parameters)
         {
             var connection = _context.CreateConnection;
 
+            var objParam = new DynamicParameters(parameters);
             var response = await connection.
-                QueryAsync<GetAllMedicResponseDto>(storedProcedure, commandType: CommandType.StoredProcedure);
+                QueryAsync<GetAllMedicResponseDto>(storedProcedure, param:objParam,commandType: CommandType.StoredProcedure);
 
             return response;
         }

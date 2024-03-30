@@ -22,9 +22,9 @@ namespace CLINICA.Api.Controllers
         }
 
         [HttpGet(EXAMEN.ListaExamen)]
-        public async Task<IActionResult> ListaExamen()
+        public async Task<IActionResult> ListaExamen([FromQuery] GetAllExamenQuery query)
         {
-            var response = await _mediator.Send(new GetAllExamenQuery());
+            var response = await _mediator.Send(query);
             return Ok(response);
         }
         [HttpGet(EXAMEN.ExamenById)]
