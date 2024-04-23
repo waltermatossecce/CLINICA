@@ -22,8 +22,10 @@ namespace CLINICA.Persistencia.Repository
 
             var patient = await connection.QueryAsync<GetAllPatientResponseDto>
                 (storedProcedure, commandType: CommandType.StoredProcedure);
-            
+
             return patient;
         }
+
+
     }
 }

@@ -43,5 +43,11 @@
             public const string MedicDelete = API + "Delete/medicId:int";
             public const string ChangeStateMedic = API + "ChangeStateMedic";
         }
+        public struct TAKEEXAM
+        {
+            public const string ListadoTakeExam = API + "ListadoTakeExam";
+            public const string TakeExamById = API + "TakeExamById/{takeExamId:int}";
+            public const string RegisterTakeExam = API + "RegisterTakeExam";
+        }
     }
 }

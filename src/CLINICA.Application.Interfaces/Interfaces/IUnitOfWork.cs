@@ -1,4 +1,5 @@
 ﻿using CLINICA.Domain.Entities;
+using System.Transactions;
 
 namespace CLINICA.Application.Interfaces.Interfaces
 {
@@ -7,8 +8,10 @@ namespace CLINICA.Application.Interfaces.Interfaces
         IGenericRepository<Analysis>Analysis { get;}
         IExamenRepository Exams { get;}
         IPatientRepository Patients { get;}
-
         IMedicRepository Medic { get;}
+        ITakeExamRepository TakeExam { get;}
+        //transacion
+        TransactionScope BeginTransaction();
 
     }
 }

@@ -4,11 +4,6 @@ using CLINICA.Application.UseCase.UseCases.Pacientes.Command.CreateCommand;
 using CLINICA.Application.UseCase.UseCases.Pacientes.Command.DeleteCommand;
 using CLINICA.Application.UseCase.UseCases.Pacientes.Command.UpdateCommand;
 using CLINICA.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLINICA.Application.UseCase.Mappings
 {

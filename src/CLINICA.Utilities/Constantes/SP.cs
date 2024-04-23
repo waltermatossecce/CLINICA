@@ -39,11 +39,18 @@
         public const string uspMedicRemove = "uspMedicRemove";
         public const string uspChangeStateMedic = "uspChangeStateMedic";
         #endregion
+
+        #region uspTakeExam
+        public const string uspTakeExamList = "uspTakeExamList";
+
+        #endregion
     }
     public class TB
     {
         public const string Analysis = "Analysis";
         public const string Exams = "Exams";
         public const string Medics = "Medics";
+        public const string TakeExam = "TakeExam";
+        public const string Pacientes = "Pacientes"; 
     }
 }

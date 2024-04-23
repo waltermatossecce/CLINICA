@@ -23,6 +23,7 @@ namespace CLINICA.Application.UseCase.UseCases.Pacientes.Query.GetAllQuery
 
             try
             {
+//var count = await _unitOfWork.Patients.CountAsync(TB.Pacientes);
                 var pacientes = await _unitOfWork.Patients.GetAllPatient(SP.uspPatientList);
 
                 if (pacientes is not null)

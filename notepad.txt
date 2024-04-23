@@ -8,6 +8,10 @@ AudiCreateDate datetime2(7)not null
 
 /*LISTA ANALYSIS*/
 CREATE PROCEDURE uspAnalysisList
+(
+ @PageNumber INT,
+ @PageSize INT
+)
 AS
 BEGIN
    select 
@@ -16,6 +20,9 @@ BEGIN
    State,
    Name
    from Analysis
+   ORDER BY AnalysisId 
+   OFFSET (@PageNumber - 1)*@PageSize ROWS
+   FETCH NEXT @PageSize ROWS ONLY
 END
 
 exec uspAnalysisList;
@@ -98,6 +105,10 @@ create table Exams
 );
 
 CREATE OR ALTER PROCEDURE uspExamList
+(
+ @PageNumber INT,
+ @PageSize INT
+)
 AS
 BEGIN
    SELECT
@@ -110,7 +121,10 @@ BEGIN
 	   END StateExam
 	   from Exams ex
 	   inner join Analysis a
-	   ON ex.AnalysisId=a.AnalysisId 
+	   ON ex.AnalysisId=a.AnalysisId
+	   order by ExamId
+       OFFSET (@PageNumber - 1)*@PageSize ROWS
+       FETCH NEXT @PageSize ROWS ONLY
 END
 
 //busca por id de examen
@@ -240,7 +254,7 @@ BEGIN
    select
    pa.PatientId,
    pa.Names,
-   CONCAT_WS('', pa.LastName, pa.MotherMaidenName) SurNames,
+   CONCAT_WS(' ', pa.LastName, pa.MotherMaidenName) SurNames,
    dt.Document documentType,
    pa.DocumentNumber,
    pa.Phono,
@@ -259,6 +273,7 @@ BEGIN
    INNER JOIN Genders ge
    ON pa.GenerId = ge.GenderId
 END
+
 
 //busca pacientes por id
 create or alter procedure uspPatientById 
@@ -420,12 +435,16 @@ go
 
 --Creamos un procedimiento de una listado de medicos y specitialities de medico
 CREATE OR ALTER PROCEDURE uspMedicList
+(
+ @PageNumber int,
+ @PageSize int
+)
 AS
 BEGIN
    select 
    me.MedicId,
    me.Names,
-   CONCAT_WS(' ', me.Lastname, me.MotherMaidenName) surNames,
+   CONCAT_WS(' ', me.Lastname, me.MotherMaidenName) SurNames,
    sp.Name AS Specialities,
    dt.Document AS DocumentType,
    me.DocumentNumber,
@@ -442,6 +461,9 @@ BEGIN
    ON me.DocumentTypeId = dt.DocumentTypeId
    INNER JOIN Specialities sp
    ON me.SpecialtyId = sp.SpecialtyId
+   ORDER BY me.MedicId
+   OFFSET (@PageNumber -1) * @PageSize ROWS
+   FETCH NEXT @PageSize ROWS ONLY
 END
 
 
@@ -562,4 +584,78 @@ BEGIN
   update Medics
   set State =@State
   Where MedicId = @MedicId
+END
+
+
+
+
+create table TakeExam
+(
+  TakeExamId int identity(1,1)primary key not null,
+  PatientId int not null,
+  MedicId int not null,
+  State int not null,
+  AuditCreateDate datetime2(7)not null,
+  Foreign Key (PatientId) references Patient(PatientId),
+  Foreign Key (MedicId) references Medics(MedicId)
+);
+
+
+create table TakeExamDetail
+(
+   TakeExamDetailId int identity(1,1)primary key not null,
+   TakeExamId int not null,
+   ExamId int not null,
+   AnalysisId int not null
+);
+
+
+create or alter procedure uspTakeExamList
+(
+ @PageNumber int,
+ @PageSize int
+)
+AS
+BEGIN
+   Select 
+   te.MedicId,
+   CONCAT_WS(' ',p.LastName, p.MotherMaidenName) Patient,
+   CONCAT_WS(' ',m.Lastname, m.MotherMaidenName) Medics,
+   CASE te.State 
+   When 1 THEN 'Finalizado'
+   Else 'Pendiente'
+   END StateTakeExam,
+   te.AuditCreateDate
+   from TakeExam te
+   INNER JOIN Patient p ON te.PatientId = p.PatientId
+   INNER JOIN Medics m ON te.MedicId = m.MedicId
+   ORDER BY te.MedicId
+   OFFSET (@PageNumber - 1) * @PageSize ROWS
+   FETCH NEXT @PageSize ROWS ONLY
+END
+
+--Busca su TakeExamId por Id 
+
+ALTER   procedure [dbo].[uspTakeExamList]
+(
+   @PageNumber int,
+   @PageSize int
+)
+AS
+BEGIN
+   Select 
+   te.TakeExamId,
+   CONCAT_WS(' ', p.LastName, p.MotherMaidenName) Patient,
+   CONCAT_WS(' ', m.Lastname, m.MotherMaidenName) Medics,
+   CASE te.State 
+   When 1 THEN 'Finalizado'
+   Else 'Pendiente'
+   END StateTakeExam,
+   te.AuditCreateDate
+   from TakeExam te
+   INNER JOIN Patient p ON te.PatientId = p.PatientId
+   INNER JOIN Medics m ON te.MedicId = m.MedicId
+   ORDER BY te.TakeExamId
+   OFFSET (@PageNumber - 1) * @PageSize ROWS
+   FETCH NEXT @PageSize ROWS ONLY
 END

@@ -6,5 +6,6 @@ namespace CLINICA.Application.UseCase.UseCases.Pacientes.Query.GetAllQuery
 {
     public class GetAllPatientQuery : IRequest<BaseResponse<IEnumerable<GetAllPatientResponseDto>>>
     {
+
     }
 }
