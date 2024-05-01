@@ -1,4 +1,6 @@
-﻿namespace CLINICA.Utilities.Constantes
+﻿using System.Data;
+
+namespace CLINICA.Utilities.Constantes
 {
     public class SP
     {
@@ -44,6 +46,11 @@
         public const string uspTakeExamList = "uspTakeExamList";
 
         #endregion
+
+
+        #region uspResults
+        public const string uspResultList = "uspResultList";
+        #endregion
     }
     public class TB
     {
@@ -51,6 +58,8 @@
         public const string Exams = "Exams";
         public const string Medics = "Medics";
         public const string TakeExam = "TakeExam";
-        public const string Pacientes = "Pacientes"; 
+        public const string Pacientes = "Pacientes";
+        public const string Resultados = "Results";
+
     }
 }

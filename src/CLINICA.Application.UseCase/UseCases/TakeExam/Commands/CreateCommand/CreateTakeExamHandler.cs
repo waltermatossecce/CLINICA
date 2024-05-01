@@ -33,7 +33,7 @@ namespace CLINICA.Application.UseCase.UseCases.TakeExam.Commands.CreateCommand
                 {
                     var newTakeExamDetails = new TakeExamDetail
                     {
-                        TakeExamId = detail.TakeExamId,
+                        TakeExamId = (int)takeExamRegis.TakeExamId!,
                         ExamId = detail.ExamId,
                         AnalysisId = detail.AnalysisId,
                     };

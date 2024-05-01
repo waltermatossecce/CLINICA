@@ -15,7 +15,7 @@ namespace CLINICA.Persistencia.Repository
         public TakeExamRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
-        }
+        } 
 
         public async Task<IEnumerable<GetAllTakeExamResponseDto>> GetAllTakeExams(string storedProcedure, object parameters)
         {
@@ -60,14 +60,11 @@ namespace CLINICA.Persistencia.Repository
 
 
         }
-
         public async Task<TakeExam> RegisterTakeExam(TakeExam takeExam)
         {
             var connection = _context.CreateConnection;
 
-            var query = @"INSERT INTO TakeExam(PatientId, MedicId, State, AuditCreateDate)
-                        VALUES (@PatientId, @MedicId, @State, @AuditCreateDate)
-                        SELECT CAST(SCOPE_IDENTITY() AS INT)";
+            var query = "uspRegisterTakeExam";
 
             var parameters = new DynamicParameters();
             parameters.Add("PatientId", takeExam.PatientId);
@@ -94,8 +91,49 @@ namespace CLINICA.Persistencia.Repository
             parameters.Add("AnalysisId", takeExamDetail.AnalysisId);
 
             await connection.ExecuteAsync(sql, param: parameters);
+        }
 
+        public async Task EditTakeExam(TakeExam takeExam)
+        {
+            var connection = _context.CreateConnection;
 
+            var sql = "uspUpdateTakeExam";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("PatientId",takeExam.PatientId);
+            parameters.Add("MedicId", takeExam.MedicId);
+            parameters.Add("TakeExamId", takeExam.TakeExamId);
+
+            await connection.ExecuteAsync(sql, param: parameters, commandType: CommandType.StoredProcedure);
+
+        }
+
+        public async Task EditTakeExamDetails(TakeExamDetail takeExamDetail)
+        {
+            var connection = _context.CreateConnection;
+
+            var sql = "uspUpdateTakeExamDetails";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("ExamId", takeExamDetail.ExamId);
+            parameters.Add("AnalysisId", takeExamDetail.AnalysisId);
+            parameters.Add("TakeExamDetailId", takeExamDetail.TakeExamDetailId);
+
+            await connection.ExecuteAsync(sql, param:parameters, commandType: CommandType.StoredProcedure);
+        }
+        public async Task<bool> ChangeStateTakeExam(TakeExam takeExam)
+        {
+            var connection = _context.CreateConnection;
+
+            var sql = @"update TakeExam set State = @State where TakeExamId = @TakeExamId";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("TakeExamId", takeExam.TakeExamId);
+            parameters.Add("State", takeExam.State);
+
+            var recordsAffected = await connection.ExecuteAsync(sql, param: parameters);
+
+            return recordsAffected > 0;
         }
     }
 }

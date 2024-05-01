@@ -3,7 +3,7 @@ using CLINICA.Application.UseCase.Extensions;
 using CLINICA.Persistencia.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var Cors = "Cors";
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -16,6 +16,18 @@ builder.Services.addInyectionPersistence();
 //AGREGAMOS LA APPLICACION SOLO LAS INYECTION EXTENSIONS
 builder.Services.AddInyectionApplication();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: Cors,
+        builder =>
+        {
+            builder.WithOrigins("*");
+            builder.AllowAnyMethod();
+            builder.AllowAnyHeader();
+        });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(Cors);
 
 app.UseAuthorization();
 app.AddMiddleware();

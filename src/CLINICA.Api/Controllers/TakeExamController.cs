@@ -1,4 +1,6 @@
-﻿using CLINICA.Application.UseCase.UseCases.TakeExam.Commands.CreateCommand;
+﻿using CLINICA.Application.UseCase.UseCases.TakeExam.Commands.ChangeStateCommand;
+using CLINICA.Application.UseCase.UseCases.TakeExam.Commands.CreateCommand;
+using CLINICA.Application.UseCase.UseCases.TakeExam.Commands.UpdateCommand;
 using CLINICA.Application.UseCase.UseCases.TakeExam.Query.GetAllQuery;
 using CLINICA.Application.UseCase.UseCases.TakeExam.Query.GetByIdQuery;
 using MediatR;
@@ -32,6 +34,19 @@ namespace CLINICA.Api.Controllers
         }
         [HttpPost(TAKEEXAM.RegisterTakeExam)]
         public async Task<IActionResult> RegisterTakeExam([FromBody] CreateTakeExamCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+        [HttpPut(TAKEEXAM.UpdateTakeExam)]
+        public async Task<IActionResult> UpdateTakeExam([FromBody] UpdateTakeExamCommand command)
+        {
+            var response =await _mediator.Send(command);
+            return Ok(response);
+        
+        }
+        [HttpPut(TAKEEXAM.ChangeStateTakeExam)]
+        public async Task<IActionResult>ChangeStateTakeExam([FromBody] ChangeStateTakeExamCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);

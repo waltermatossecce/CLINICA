@@ -13,6 +13,9 @@ namespace CLINICA.Application.Interfaces.Interfaces
         //guarda takeExam
         Task<TakeExam> RegisterTakeExam(TakeExam takeExam);
         //guarda TakeExamDetails
-        public Task RegisterTakeExamDetail(TakeExamDetail takeExamDetail);
+        Task RegisterTakeExamDetail(TakeExamDetail takeExamDetail);
+        Task EditTakeExam(TakeExam takeExam);
+        Task EditTakeExamDetails(TakeExamDetail takeExamDetail);
+        Task<bool> ChangeStateTakeExam(TakeExam takeExam);
     }
 }

@@ -21,4 +21,8 @@
     <ProjectReference Include="..\CLINICA.Utilities\CLINICA.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Results\Command\" />
+  </ItemGroup>
+
 </Project>

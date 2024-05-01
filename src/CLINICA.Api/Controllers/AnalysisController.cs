@@ -5,12 +5,14 @@ using CLINICA.Application.UseCase.UseCases.Analysis.Commands.UpdateCommand;
 using CLINICA.Application.UseCase.UseCases.Analysis.Query.GetAllQuery;
 using CLINICA.Application.UseCase.UseCases.Analysis.Query.GetByIdQuery;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using static CLINICA.Api.Extensions.Router.APIRouter;
 
 namespace CLINICA.Api.Controllers
 {
     [ApiController]
+    [EnableCors("Cors")]
     public class AnalysisController : ControllerBase
     {
         private readonly IMediator _mediator;

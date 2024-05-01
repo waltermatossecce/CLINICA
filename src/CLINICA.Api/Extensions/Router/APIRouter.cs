@@ -48,6 +48,12 @@
             public const string ListadoTakeExam = API + "ListadoTakeExam";
             public const string TakeExamById = API + "TakeExamById/{takeExamId:int}";
             public const string RegisterTakeExam = API + "RegisterTakeExam";
+            public const string UpdateTakeExam = API + "UpdateTakeExam";
+            public const string ChangeStateTakeExam = API + "ChangeStateTakeExam";
+        }
+        public struct RESULTS
+        {
+            public const string ListadoResults = API + "ListadoResults";
         }
     }
 }

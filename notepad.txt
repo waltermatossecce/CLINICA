@@ -634,28 +634,121 @@ BEGIN
    FETCH NEXT @PageSize ROWS ONLY
 END
 
---Busca su TakeExamId por Id 
+--REGISTRAMOS LA TABLA TakeExam
 
-ALTER   procedure [dbo].[uspTakeExamList]
+CREATE ALTER PROCEDURE [uspRegisterTakeExam]
+
 (
-   @PageNumber int,
-   @PageSize int
+  @PatientId int,
+  @MedicId int,
+  @State int,
+  @AuditCreateDate datetime
 )
 AS
 BEGIN
-   Select 
-   te.TakeExamId,
-   CONCAT_WS(' ', p.LastName, p.MotherMaidenName) Patient,
-   CONCAT_WS(' ', m.Lastname, m.MotherMaidenName) Medics,
-   CASE te.State 
-   When 1 THEN 'Finalizado'
-   Else 'Pendiente'
-   END StateTakeExam,
-   te.AuditCreateDate
-   from TakeExam te
-   INNER JOIN Patient p ON te.PatientId = p.PatientId
-   INNER JOIN Medics m ON te.MedicId = m.MedicId
-   ORDER BY te.TakeExamId
-   OFFSET (@PageNumber - 1) * @PageSize ROWS
-   FETCH NEXT @PageSize ROWS ONLY
+	INSERT INTO TakeExam(
+	PatientId,
+	MedicId,
+	State,
+	AuditCreateDate
+	)
+	VALUES(
+	@PatientId,
+	@MedicId,
+	1,
+	@AuditCreateDate
+	)
+	SELECT CAST(SCOPE_IDENTITY() AS INT)
+END
+
+--Actualizamos la tabla TakeExam
+
+CREATE PROCEDURE uspUpdateTakeExam
+(
+@PatientId int,
+@MedicId int,
+@TakeExamId int 
+)
+AS
+BEGIN
+UPDATE TakeExam SET 
+                PatientId = @PatientId,
+                MedicId = @MedicId
+                Where TakeExamId = @TakeExamId;
+END
+
+--Actualizamos la tabla TakeExamDetails
+
+CREATE PROCEDURE uspUpdateTakeExamDetails
+(
+ @ExamId int,
+ @AnalysisId int,
+ @TakeExamDetailId int
+)
+AS
+BEGIN
+UPDATE TakeExamDetail 
+SET ExamId = @ExamId,
+AnalysisId = @AnalysisId
+WHERE TakeExamDetailId = @TakeExamDetailId
+END
+
+--Actualizamos el State de la tabla TakeExam
+CREATE PROCEDURE uspChangeStateTakeExam 
+(
+@TakeExamId int,
+@State int 
+)
+AS
+BEGIN
+ 
+ update TakeExam set State = @State where TakeExamId = @TakeExamId
+END
+
+
+Create table Results
+(
+ ResultId INT IDENTITY(1,1)primary key not null,
+ TakeExamId int not null,
+ State int not null,
+ AuditCreateDate datetime2 (7) not null,
+ foreign key (TakeExamId) references TakeExam(TakeExamId)
+);
+
+create table ResultDetail
+(
+ ResultDetailId int identity(1,1)primary key not null,
+ ResultId int not null,
+ ResultFile varchar(MAX),
+ TakeExamDetailId int,
+ foreign key (ResultId) references Results(ResultId),
+ foreign key (TakeExamDetailId) references TakeExamDetail(TakeExamDetailId)
+);
+
+--LISTA DE LA TABLA EXAMEN
+
+CREATE OR ALTER PROCEDURE uspResultList
+(
+  @PageNumber int,
+  @PageSize int
+)
+AS
+BEGIN
+  Select
+  r.ResultId,
+  CONCAT_WS(' ',p.LastName,p.MotherMaidenName,p.Names) Patient,
+  p.DocumentNumber PatientDocument,
+  r.AuditCreateDate,
+  case r.State
+    WHEN 1 then 'Entregado'
+	ELSE 'Realizado'
+	End StateResult
+  From Results r
+  INNER JOIN TakeExam te
+  ON r.TakeExamId = te.TakeExamId
+  INNER JOIN Patient p
+  ON te.PatientId = p.PatientId
+  order by r.ResultId
+  OFFSET (@PageNumber - 1) * @PageSize ROWS
+  FETCH NEXT @PageSize ROWS ONLY
 END
