@@ -6,5 +6,7 @@ namespace CLINICA.Application.Interfaces.Interfaces
     public interface IResultsRepository :IGenericRepository<Results>
     {
         Task<IEnumerable<GetAllResultsResponseDto>> GetAllResults(string storedProcedure,object parameters);
+
+        //Task<bool> RegisterResullt(Results results);
     }
 }

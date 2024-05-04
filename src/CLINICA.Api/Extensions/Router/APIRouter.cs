@@ -55,5 +55,10 @@
         {
             public const string ListadoResults = API + "ListadoResults";
         }
+        public struct USER
+        {
+            public const string RegisterUser = API + "RegisterUser";
+        }
+
     }
 }

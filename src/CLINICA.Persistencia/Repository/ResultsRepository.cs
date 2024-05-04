@@ -27,5 +27,7 @@ namespace CLINICA.Persistencia.Repository
                           
             return results;
         }
+
+       
     }
 }

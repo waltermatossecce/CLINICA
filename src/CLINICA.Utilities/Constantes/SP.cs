@@ -51,6 +51,11 @@ namespace CLINICA.Utilities.Constantes
         #region uspResults
         public const string uspResultList = "uspResultList";
         #endregion
+
+        #region uspUsers
+        public const string uspUserRegister = "uspUserRegister";
+        #endregion
+
     }
     public class TB
     {

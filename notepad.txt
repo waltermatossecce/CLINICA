@@ -705,6 +705,7 @@ BEGIN
  update TakeExam set State = @State where TakeExamId = @TakeExamId
 END
 
+--tabla de resutados
 
 Create table Results
 (
@@ -715,6 +716,7 @@ Create table Results
  foreign key (TakeExamId) references TakeExam(TakeExamId)
 );
 
+--tabla de resutados de detalles
 create table ResultDetail
 (
  ResultDetailId int identity(1,1)primary key not null,
@@ -725,7 +727,7 @@ create table ResultDetail
  foreign key (TakeExamDetailId) references TakeExamDetail(TakeExamDetailId)
 );
 
---LISTA DE LA TABLA EXAMEN
+--creamos un procedimientos almacenado de listado de resultados con su paginación
 
 CREATE OR ALTER PROCEDURE uspResultList
 (
@@ -751,4 +753,75 @@ BEGIN
   order by r.ResultId
   OFFSET (@PageNumber - 1) * @PageSize ROWS
   FETCH NEXT @PageSize ROWS ONLY
+END
+
+---------------------------------------------------------
+---tabla de roles
+create table Roles
+(
+  RoleId int identity(1,1)primary key not null,
+  Name varchar(50)
+);
+
+--tabla de usuarios
+Create table Users
+(
+  UserId int identity(1,1)primary key not null,
+  FirstName varchar(50),
+  Latname varchar(50),
+  Email varchar(255),
+  Password varchar(MAX),
+  RoleId int,
+  State int,
+  AuditCreateDate datetime2(7)
+  foreign key (RoleId) references Roles(RoleId)
+);
+
+--tabla de persmisos
+create table Permissions
+(
+ PermissionId int identity(1,1)primary key not null,
+ Name varchar(150)
+);
+
+--tabla de roles con permisos
+create table RolePermissions
+(
+ RoleId int,
+ PermissionId int,
+ foreign key (RoleId) references Roles(RoleId),
+ foreign key (PermissionId) references Permissions(PermissionId)
+);
+
+
+create or alter procedure uspUserRegister
+(
+  @FirstName varchar(50),
+  @Latname varchar(50),
+  @Email varchar(255),
+  @Password varchar(MAX),
+  @RoleId int
+)
+AS
+BEGIN
+INSERT INTO Users
+(
+  FirstName,
+  Latname,
+  Email,
+  Password,
+  RoleId,
+  State,
+  AuditCreateDate
+)
+VALUES
+(
+  @FirstName,
+  @Latname,
+  @Email,
+  @Password,
+  @RoleId,
+  1,
+  GETDATE()
+)
 END

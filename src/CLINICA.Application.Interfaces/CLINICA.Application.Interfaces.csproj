@@ -11,4 +11,8 @@
     <ProjectReference Include="..\CLINICA.Domain\CLINICA.Domain.csproj" />
   </ItemGroup>
 
+	<!--<ItemGroup>
+		<ProjectReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>-->
+
 </Project>

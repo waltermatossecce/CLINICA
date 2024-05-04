@@ -12,6 +12,9 @@ namespace CLINICA.Application.Interfaces.Interfaces
         ITakeExamRepository TakeExam { get;}
         IResultsRepository Results { get;}
 
+        //implementacion de usuario 
+        IUserRepository User { get;}
+
         //transacion
         TransactionScope BeginTransaction();
 

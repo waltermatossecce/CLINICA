@@ -17,6 +17,8 @@ namespace CLINICA.Persistencia.Repository
 
         public IResultsRepository Results { get; }
 
+        public IUserRepository User {get;}
+
         public UnitOfWork(ApplicationDbContext context, IGenericRepository<Analysis> analysis)
         {
             _context = context;
@@ -26,6 +28,7 @@ namespace CLINICA.Persistencia.Repository
             Medic = new MedicRepository(_context);
             TakeExam = new TakeExamRepository(_context);
             Results = new ResultsRepository(_context);
+            User = new UserRepository(_context);
 
         }
         public void Dispose()
